@@ -87,3 +87,24 @@ const person = {
 const p3 = {...p2, [att1]: value};
 
 console.log(p3);
+
+let a = [{
+  nombre: 'N1',
+  edad: 10,
+  att: 'Z'
+},{
+  nombre: 'N2',
+  edad: 20,
+  att: 'Y'
+},{
+  nombre: 'N3',
+  edad:15,
+  att: 'X'
+}];
+
+console.log(a);
+
+const [el,...rest] = a;
+a =[{...el, nombre: 'N10', edad: 50}, ...rest];
+
+console.log(a);
