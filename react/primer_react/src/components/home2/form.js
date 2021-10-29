@@ -21,7 +21,7 @@ const Form = props => {
 
     const clickButton = (e) => {
         e.preventDefault();
-        props.data.setEstado(inputs);
+        props.agregar(inputs);
     }
 
     return <>

@@ -2,23 +2,23 @@ import Home from "./components/home2/home";
 import Form from "./components/home2/form";
 import Header from "./components/header/header";
 import { useState } from "react";
+import List from "./components/list/list";
 
 function App() {
 
-  const [estado, setEstado] = useState({
-    nombre: '',
-    apellido: '',
-    curso: ''
-  });
+  const [lista, setLista] = useState([]);
+
+  const agregarElemento = (item) => {
+    setLista([...lista, item]);
+  }
 
   return (
     <>
-      <Header data={estado}/>
-      <Home data={{estado, setEstado}}>
-      </Home>
       <hr/>
-      <Form data={{estado, setEstado}}>
+      <Form agregar={agregarElemento}>
       </Form>
+      <hr/>
+      <List lista={lista}/>
     </>
   );
 }
