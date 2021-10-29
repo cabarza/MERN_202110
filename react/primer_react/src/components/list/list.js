@@ -2,9 +2,11 @@ const List = (props) => {
     return <>
         <table>
             <thead>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Curso</th>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Curso</th>
+                    </tr>
             </thead>
             <tbody>
                 {props.lista.map((o, i) => <tr key={i}>
