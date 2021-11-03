@@ -4,6 +4,7 @@ import Header from "./components/header/header";
 import { useState } from "react";
 import List from "./components/list/list";
 import Admin from "./components/admin-reactrap/admin";
+import Pokemones from "./components/admin-reactrap/pokemones";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <Admin />
+      <Pokemones/>
     </>
   );
 }
