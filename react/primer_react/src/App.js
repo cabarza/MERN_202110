@@ -3,6 +3,7 @@ import Form from "./components/home2/form";
 import Header from "./components/header/header";
 import { useState } from "react";
 import List from "./components/list/list";
+import Admin from "./components/admin-reactrap/admin";
 
 function App() {
 
@@ -14,11 +15,7 @@ function App() {
 
   return (
     <>
-      <hr/>
-      <Form agregar={agregarElemento}>
-      </Form>
-      <hr/>
-      <List lista={lista}/>
+      <Admin />
     </>
   );
 }
