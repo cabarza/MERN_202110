@@ -1,5 +1,6 @@
 import { Link, Router } from "@reach/router";
 import { useState } from "react";
+import { AiFillHome, AiFillPlusCircle } from "react-icons/ai";
 import { Col, Row } from "reactstrap";
 import Swal from "sweetalert2";
 import ContactForm from "./form";
@@ -10,10 +11,17 @@ const ContactAdmin = (props) => {
     const [contacts, setContacts] = useState([]);
 
     const create = (data) => {
-        console.log(data);
         setContacts([
             ...contacts,
             data
+        ]);
+    }
+
+    const update = (data, i) => {
+        const list = [...contacts];
+        list.splice(i, 1, data);
+        setContacts([
+            ...list,
         ]);
     }
 
@@ -24,7 +32,8 @@ const ContactAdmin = (props) => {
             icon:'warning',
             showCancelButton: true,
             confirmButtonText: 'Si, eliminalo!!!',
-            cancelButtonText: 'No'
+            cancelButtonText: 'No',
+            confirmButtonColor: 'red'
         }).then(resp => {
             if(resp.isConfirmed) {
                 setContacts(contacts.filter((e, indice) => indice != i));
@@ -38,15 +47,15 @@ const ContactAdmin = (props) => {
                 <h1>Contactos</h1>
             </Col>
             <Col xs={6} md={3}>
-                <Link to="/">Inicio</Link>&nbsp;
-                <Link to="/contacts/form">Form</Link>&nbsp;
-                <Link to="/contacts/view/123456">View</Link>
+                <Link to="/"><AiFillHome size="30px" color="black"/></Link>
+                <Link to="/contacts/create" style={{marginLeft: '20px'}}><AiFillPlusCircle size="30px" color="orange"/></Link>
             </Col>
         </Row>
         <Row>
             <Router>
                 <ContactList path="/" contacts={contacts} deleteContact={deleteContact}/>
-                <ContactForm path="form" create={create}/>
+                <ContactForm path="create" create={create} />
+                <ContactForm path="update/:id" update={update} contacts={contacts}/>
                 <ContactView path="view/:id" contacts={contacts}/>
             </Router>
         </Row>

@@ -1,6 +1,5 @@
 import { Table } from "reactstrap";
-import { MdPageview } from "react-icons/md";
-import {AiOutlineDelete} from "react-icons/ai";
+import {AiFillDelete, AiFillEdit, AiFillEye} from "react-icons/ai";
 import { Link } from "@reach/router";
 
 const ContactList = (props) => {
@@ -17,8 +16,9 @@ const ContactList = (props) => {
         <tbody>
             {props.contacts.map((c, i) => <tr key={i}>
                 <td>
-                    <Link to={`/contacts/view/${i}`}><MdPageview/></Link>
-                    <AiOutlineDelete color="red" onClick={e => props.deleteContact(e, i)}/>
+                    <Link to={`/contacts/view/${i}`}><AiFillEye size="30px" color="green"/></Link>
+                    <Link to={`/contacts/update/${i}`}><AiFillEdit size="30px" color="blue"/></Link>
+                    <AiFillDelete size="30px" style={{cursor: 'hand'}} color="red" onClick={e => props.deleteContact(e, i)}/>
                 </td>
                 <td>{c.name}</td>
                 <td>{c.email}</td>

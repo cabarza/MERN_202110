@@ -1,5 +1,5 @@
 import { useNavigate } from "@reach/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import Swal from "sweetalert2";
 
@@ -23,10 +23,14 @@ const ContactForm = (props) => {
         })
     }
 
-    const create = (e) => {
+    const save = (e) => {
         e.preventDefault();
-        props.create(inputs);
-        navigate('/contacts/')
+        if(!props.id) {
+            props.create(inputs);
+        } else {
+            props.update(inputs, props.id);
+        }
+        navigate('/contacts/');
     }
 
     const cancel = () => {
@@ -44,12 +48,18 @@ const ContactForm = (props) => {
         })
     }
 
+    useEffect(() => {
+        if(props.id) {
+            setInputs(props.contacts[props.id]);
+        }
+    }, [])
+
     return <>
         <Row>
             <h1>Formulario</h1>
         </Row>
         <Row>
-            <Form onSubmit={create}>
+            <Form onSubmit={save}>
                 <Row>
                     <Col xs={12}>
                         <FormGroup>
@@ -72,7 +82,8 @@ const ContactForm = (props) => {
                 </Row>
                 <Row>
                     <Col>
-                        <Button type="submit">Crear</Button>
+                        { !props.id && <Button type="submit">Crear</Button> }
+                        { props.id && <Button type="submit">Actualizar</Button> }
                         <Button type="button" color="danger" onClick={cancel} style={{marginLeft:'20px'}}>Cancelar</Button>
                     </Col>
                 </Row>
