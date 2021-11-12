@@ -1,37 +1,57 @@
-const data = [];
+const Contact = require('../model/contact.model');
+
 
 module.exports.create = (req, resp) => {
     const contact = req.body;
-    contact.id = data.length == 0?data.length+1: data[data.length-1].id+1;
-    data.push(contact);
-    resp.status(200).json({ ok: true, message: 'Se agregó el contacto', data: contact});
+    Contact.create(contact)
+        .then(data => resp.status(200).json({ ok: true, message: 'Se agregó el contacto', data: data}))
+        .catch(error => {
+            console.log('CREATE', error);
+            if(error.name === 'ValidationError'){
+                resp.status(500).json({ok: false, message: error.message, error: error})
+            } else{ 
+                resp.status(500).json({ok: false, message: 'Error al guardar el contacto'})    
+            }
+        });
 }
 
 module.exports.edit = (req, resp) => {
-    const id = req.params.id;
     const contact = req.body;
-    const index = data.findIndex(c => c.id == id);
-    data.splice(index, 1, contact);
-    resp.status(200).json({ ok: true, message: 'Se actualizó el contacto', data: contact});
+    Contact.findOneAndUpdate({_id: req.params.id }, contact)
+        .then(data => resp.status(200).json({ ok: true, message: 'Se actualizó el contacto', data: contact}))
+        .catch(error => {
+            console.log('EDIT', error);
+            if(error.name === 'ValidationError'){
+                resp.status(500).json({ok: false, message: error.message, error: error})
+            } else{ 
+                resp.status(500).json({ok: false, message: 'Error al guardar el contacto'})    
+            }
+        });
 }
 
 module.exports.get = (req, resp) => {
-    const id = req.params.id;
-    const contact = data.find(c => c.id == id);
-    if(contact){
-        resp.status(200).json({ ok: true, message: 'Contacto encontrado', data: contact });
-    } else {
-        resp.status(404).json({ ok: false, message: 'Contacto no encontrado'});
-    }
+    Contact.findById(req.params.id)
+        .then(data => resp.status(200).json({ ok: true, message: 'Contacto', data: data}))
+        .catch(error => {
+            console.log('GET', error);
+            resp.status(500).json({ok: false, message: 'Error al obtener el contacto'})
+        });
 }
 
 module.exports.list = (req, resp) => {
-    resp.status(200).json({ ok: true, message: 'Lista de contactos', data: data});
+    Contact.find()
+        .then(data => resp.status(200).json({ ok: true, message: 'Contactos', data: data}))
+        .catch(error => {
+            console.log('LIST', error);
+            resp.status(500).json({ok: false, message: 'Error al obtener los contactos'})
+        });
 }
 
 module.exports.del = (req, resp) => {
-    const id = req.params.id;
-    const index = data.findIndex(c => c.id == id);
-    const contact = data.splice(index, 1);
-    resp.status(200).json({ ok: true, message: 'Se eliminó el contacto', data: contact});
+    Contact.findByIdAndRemove(req.params.id)
+        .then(data => resp.status(200).json({ ok: true, message: 'Se eliminó  el contacto', data: data}))
+        .catch(error => {
+            console.log('DELETE', error);
+            resp.status(500).json({ok: false, message: 'Error al eliminar el contacto'})
+        });
 }
