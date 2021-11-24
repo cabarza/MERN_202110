@@ -15,14 +15,14 @@ const ContactAdmin = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/contacts')
+        axios.get('/api/contacts')
         .then(resp => setList(resp.data.data))
         .catch(error => 
             swal.fire('Error', error.message, 'error'));
     }, [actualizar]);
 
     const agregar = (data) => {
-        axios.post('http://localhost:8000/api/contacts', data)
+        axios.post('/api/contacts', data)
         .then(resp => {
             // Se agrega elemento creado al listado directamente evitando realizar una llamada al backend para recargar el listado
             setList([
@@ -37,7 +37,7 @@ const ContactAdmin = (props) => {
     }
 
     const editar = (data) => {
-        axios.put(`http://localhost:8000/api/contacts/${data._id}`, data)
+        axios.put(`/api/contacts/${data._id}`, data)
             .then(resp => {
                 setActualizar(!actualizar)
                 navigate('./');
@@ -56,7 +56,7 @@ const ContactAdmin = (props) => {
                 cancelButtonText: 'No'
             }).then(resp => {
                 if(resp.isConfirmed){
-                    axios.delete(`http://localhost:8000/api/contacts/${id}`)
+                    axios.delete(`/api/contacts/${id}`)
                     .then(resp => {
                         const lista = [...list];
                         lista.splice(lista.findIndex(e => e._id === id), 1);

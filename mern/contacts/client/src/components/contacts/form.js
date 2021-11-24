@@ -40,7 +40,7 @@ const ContactForm = props => {
 
     useEffect(() => {
         if(id) {
-            axios.get(`http://localhost:8000/api/contacts/${id}`)
+            axios.get(`/api/contacts/${id}`)
             .then(resp => setInputs(resp.data.data))
             .catch(error => Swal.fire('Error', 'Error al obtener el contacto, inténtelo mas tarde', 'error'));
         }
