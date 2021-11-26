@@ -4,6 +4,7 @@ import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { Container, Row } from 'reactstrap';
 import Swal from 'sweetalert2';
 import swal from 'sweetalert2';
+import Header from '../home/header';
 import ContactForm from './form';
 import ContactList from './list';
 
@@ -68,6 +69,7 @@ const ContactAdmin = (props) => {
     }
     
     return <Container>
+            <Header />
             <Row>
                 <Link to={"./"}> Listado </Link>
                 <Link to={"add"}> Agregar </Link>

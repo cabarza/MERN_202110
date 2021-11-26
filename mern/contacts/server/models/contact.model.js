@@ -15,8 +15,22 @@ const ContactSchema = new mongoose.Schema({
         type: Number,
         min:[0, 'No puede ser menor a 0 años'],
         max: [120, 'No puede tener mas de 120 años']
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, 'El usuario es requerido']
     }
 }, { timestamps: true });
+
+ContactSchema.virtual('user', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id'
+});
+
+ContactSchema.set('toObject', { virtuals: true });
+ContactSchema.set('toJSON', { virtuals: true });
 
 const Contact = mongoose.model("Contact", ContactSchema);
 

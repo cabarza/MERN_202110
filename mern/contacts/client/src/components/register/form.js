@@ -25,7 +25,7 @@ const RegisterForm = (props) => {
         });
     }
 
-    const goHome = (e) => {
+    const goLogin = (e) => {
         e?.stopPropagation();
         navigate('/');
     }
@@ -36,7 +36,7 @@ const RegisterForm = (props) => {
             .then(resp => {
                 if(resp.data.ok) {
                     Swal.fire('Registro de Usuarios', resp.data.message, 'success');
-                    goHome();
+                    goLogin();
                 } else {
                     Swal.fire('Registro de Usuarios', resp.data.message, 'error');
                 }
@@ -83,7 +83,7 @@ const RegisterForm = (props) => {
                     <Button type="submit">Registrar Usuario</Button>
                 </Col>
                 <Col xs={6} md={3}>
-                    <Button type="button" onClick={goHome}>Cancelar</Button>
+                    <Button type="button" onClick={goLogin}>Cancelar</Button>
                 </Col>
             </Row>
         </Form>

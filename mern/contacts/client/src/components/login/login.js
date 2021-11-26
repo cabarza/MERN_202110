@@ -1,8 +1,7 @@
-import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
-import Swal from "sweetalert2";
+import UserContext from "../../context/user-context";
 
 const initialState = {
     username: '',
@@ -11,7 +10,9 @@ const initialState = {
 
 const LoginForm = (props) => {
 
+
     const [inputs, setInputs] = useState(initialState);
+    const context = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -23,26 +24,14 @@ const LoginForm = (props) => {
         });
     }
 
-    const goHome = (e) => {
+    const goRegister = (e) => {
         e?.stopPropagation();
-        navigate('/');
+        navigate('/register');
     }
 
     const formSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/login', inputs)
-            .then(resp => {
-                if(resp.data.ok) {
-                    Swal.fire('Login', resp.data.message, 'success');
-                    goHome();
-                } else {
-                    Swal.fire('Login', resp.data.message, 'error');
-                }
-            })
-            .catch(err => {
-                console.log(err);
-
-            })
+        context.login(inputs);
     }
 
     return <Container>
@@ -69,12 +58,14 @@ const LoginForm = (props) => {
                     <Button type="submit">Login</Button>
                 </Col>
                 <Col xs={6} md={3}>
-                    <Button type="button" onClick={goHome}>Cancelar</Button>
+                    <Button type="button" onClick={goRegister}>Registrarse</Button>
                 </Col>
             </Row>
         </Form>
     
         </Container>;
 }
+
+// export  SESSION_USER;
 
 export default LoginForm;

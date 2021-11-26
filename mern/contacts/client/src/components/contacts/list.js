@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 import { List, Row, Table } from 'reactstrap';
 import {AiFillDelete, AiFillEdit, AiFillEye} from 'react-icons/ai';
+import { useContext } from 'react';
+import UserContext from '../../context/user-context';
 
 const ContactList = (props) => {
+
+    const context = useContext(UserContext);
 
     const eliminar = (e, id) => {
         e.stopPropagation();
@@ -25,8 +29,8 @@ const ContactList = (props) => {
             <tbody>
                 { props.list && props.list.map((elem, i) => <tr key={i}>
                     <td>
-                        <Link to={`edit/${elem._id}`} style={{margin:'5px'}}><AiFillEdit/></Link>
-                        <AiFillDelete color='red' onClick={e => eliminar(e, elem._id)} style={{margin:'5px'}}/>
+                        { context.user.id === elem.user[0]._id && <Link to={`edit/${elem._id}`} style={{margin:'5px'}}><AiFillEdit/></Link> }
+                        { context.user.id === elem.user[0]._id && <AiFillDelete color='red' onClick={e => eliminar(e, elem._id)} style={{margin:'5px'}}/> }
                         <Link to={`view/${elem._id}`} style={{margin:'5px'}}><AiFillEye/></Link>
                     </td>
                     <td>{elem.name}</td>
