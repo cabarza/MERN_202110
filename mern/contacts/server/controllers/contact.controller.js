@@ -9,7 +9,7 @@ module.exports.create = (req, res) => {
         contact.userId = payload.id;
         Contact.create(contact)
             .then(data => {
-                Contact.findById(data._id).populate('user')
+                Contact.findById(data._id).populate('user', '-password')
                     .then(user =>res.json({ ok: true, message: 'Se agregó el contacto', data: user }))
                     .catch(error => {
                         if(error.name == 'ValidationError')
@@ -45,7 +45,7 @@ module.exports.edit = (req, resp) => {
 }
 
 module.exports.get = (req, res) => {
-    Contact.findById(req.params.id).populate('user')
+    Contact.findById(req.params.id).populate('user', '-password')
         .then(data => res.status(200).json({ ok: true, message: 'Contacto', data: data}))
         .catch(error => {
             console.log('GET', error);
@@ -54,7 +54,7 @@ module.exports.get = (req, res) => {
 }
 
 module.exports.list = (req, res) => {
-    Contact.find().populate('user')
+    Contact.find().populate('user', '-password')
         .then(data => res.status(200).json({ ok: true, message: 'Contactos', data: data}))
         .catch(error => {
             console.log('LIST', error);
