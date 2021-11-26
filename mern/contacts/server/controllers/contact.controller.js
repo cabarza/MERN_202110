@@ -62,6 +62,20 @@ module.exports.list = (req, res) => {
         });
 }
 
+module.exports.listUserContacts = (req, res) => {
+    const payload = jwt.decode(req.cookies.usertoken, secret);
+    if(payload) {
+        Contact.find({userId: payload.id}).populate('user')
+            .then(data => res.status(200).json({ ok: true, message: 'Contactos', data: data}))
+            .catch(error => {
+                console.log('LIST', error);
+                res.status(200).json({ok: false, message: 'Error al obtener los contactos'})
+            });
+    } else {
+        res.status(200).json({ok: false, message: 'Error al obtener los contactos del usuario'})
+    } 
+}
+
 module.exports.del = (req, res) => {
     Contact.findByIdAndRemove(req.params.id)
         .then(data => res.status(200).json({ ok: true, message: 'Se eliminó  el contacto', data: data}))

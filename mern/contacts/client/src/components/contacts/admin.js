@@ -16,11 +16,24 @@ const ContactAdmin = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        listarTodosLosContactos(null);
+    }, [actualizar]);
+
+    const listarContactosUsuario = (e) =>{
+        e.stopPropagation();
+        axios.get('/api/contacts/user')
+        .then(resp => setList(resp.data.data))
+        .catch(error => 
+            swal.fire('Error', error.message, 'error'));
+    }
+
+    const listarTodosLosContactos = e => {
+        e?.stopPropagation();
         axios.get('/api/contacts')
         .then(resp => setList(resp.data.data))
         .catch(error => 
             swal.fire('Error', error.message, 'error'));
-    }, [actualizar]);
+    }
 
     const agregar = (data) => {
         axios.post('/api/contacts', data)
@@ -67,13 +80,14 @@ const ContactAdmin = (props) => {
             })
         }
     }
-    
+
     return <Container>
             <Header />
             <Row>
                 <Link to={"./"}> Listado </Link>
                 <Link to={"add"}> Agregar </Link>
-                <Link to={"/"}> Home </Link>
+                <a href="#" onClick={listarContactosUsuario}>Listar Contactos Usuario</a>
+                <a href="#" onClick={listarTodosLosContactos}>Listar Todos los Contactos</a>
             </Row>
             <Routes>
                 <Route index element={<ContactList  list={list} eliminar={eliminar}/>}/>

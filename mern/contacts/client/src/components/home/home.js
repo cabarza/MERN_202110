@@ -7,12 +7,15 @@ import ContactAdmin from '../contacts/admin';
 import axios from "axios";
 import Swal from "sweetalert2";
 
+const SESSION_USER = 'SESSION_USER';
+
+export { SESSION_USER };
 
 const Home = (props) => {
 
-    const SESSION_USER = 'SESSION_USER';
-
     const [user, setUser] = useState(null);
+
+    const navigate = useNavigate();
 
     const login = (inputs) => {
         axios.post('/api/login', inputs)
@@ -34,17 +37,15 @@ const Home = (props) => {
     const logout = () => {
         setUser(null);
         sessionStorage.clear();
-        navigate('/');
+        navigate('/login');
     }
-
-    const navigate = useNavigate();
   
     useEffect(() => {
         if(sessionStorage.getItem(SESSION_USER)) {
             setUser(JSON.parse(sessionStorage.getItem(SESSION_USER)));
             navigate('/contacts/');
         } else {
-            navigate('/');
+            navigate('/login');
         }
 
     }, []);
@@ -52,7 +53,7 @@ const Home = (props) => {
     return ( 
       <UserContext.Provider value={{user, setUser, login, logout}}>
           <Routes>
-            <Route index element={<LoginForm />}/>
+            <Route path="/login" element={<LoginForm />}/>
             <Route path="/register" element={<RegisterForm />}/>
             <Route path="/contacts/*" element={<ContactAdmin/>}/>
           </Routes>
@@ -61,3 +62,4 @@ const Home = (props) => {
 }
 
 export default Home;
+
