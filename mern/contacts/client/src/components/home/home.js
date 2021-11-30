@@ -12,6 +12,7 @@ const SESSION_USER = 'SESSION_USER';
 export { SESSION_USER };
 
 const Home = (props) => {
+    const {socket} = props;
 
     const [user, setUser] = useState(null);
 
@@ -51,7 +52,7 @@ const Home = (props) => {
     }, []);
   
     return ( 
-      <UserContext.Provider value={{user, setUser, login, logout}}>
+      <UserContext.Provider value={{user, setUser, login, logout, socket}}>
           <Routes>
             <Route path="/login" element={<LoginForm />}/>
             <Route path="/register" element={<RegisterForm />}/>

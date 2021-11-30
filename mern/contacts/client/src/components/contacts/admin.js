@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { Container, Row } from 'reactstrap';
 import Swal from 'sweetalert2';
 import swal from 'sweetalert2';
+import UserContext from '../../context/user-context';
 import Header from '../home/header';
 import ContactForm from './form';
 import ContactList from './list';
@@ -13,7 +14,18 @@ const ContactAdmin = (props) => {
     const [list, setList] = useState([]);
     const [actualizar, setActualizar] = useState(false);
 
+    const context = useContext(UserContext);
+
     const navigate = useNavigate();
+
+    context.socket.on("contact_created_event", data => {
+        console.log("contact_created_event", data);
+        
+        setList([
+            ...list,
+            data
+        ]);
+    });
 
     useEffect(() => {
         listarTodosLosContactos(null);
@@ -38,6 +50,7 @@ const ContactAdmin = (props) => {
     const agregar = (data) => {
         axios.post('/api/contacts', data)
         .then(resp => {
+            context.socket.emit("new_contact_event", resp.data.data);
             // Se agrega elemento creado al listado directamente evitando realizar una llamada al backend para recargar el listado
             setList([
                 ...list,

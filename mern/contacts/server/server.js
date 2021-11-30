@@ -16,4 +16,18 @@ app.use( express.urlencoded( {extended: true }));
 require('./routes/user.routes')(app);
 require('./routes/contact.route')(app);
 
-app.listen(port, () => console.log("Server started"));
+const server = app.listen(port, () => console.log("Server started"));
+
+const io = require('socket.io')(server);
+
+io.on("connection", socket => {
+    console.log(socket.id);
+
+    socket.broadcast.emit("welcome_event", { message: "Welcome to this socket" });
+
+
+    socket.on("new_contact_event", data => {
+        console.log(data);
+        socket.broadcast.emit("contact_created_event", data);
+    })
+});
